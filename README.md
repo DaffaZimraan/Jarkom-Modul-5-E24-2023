@@ -7,11 +7,14 @@
 ![topologimodul5](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/topologimodul5.jpg) </br>
 
 ## VLSM
-
-## Konfigurasi
-
-## Routing
-
+Berikut ini pembagian subnet berdasarkan topologi tersebut: </br>
+![topologifixmodul5](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/topologifixmodul5.jpg) </br>
+Berdasarkan pembagian subnet kami mendapatkan rute sebagai berikut: </br>
+![rute](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/rute.png)
+Berikut pembagian ip menggunakan tree dengan metode vlsm: </br>
+![treemodul5](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/treemodul5.jpg) </br>
+Berdasarkan tree, kami mendapatkan pembagian ip sebagai berikut: </br>
+![ip](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/ip.png)
 ## Soal 1
 ### Pertanyaan
 >Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Aura menggunakan iptables, tetapi tidak ingin menggunakan MASQUERADE.
@@ -22,6 +25,10 @@ Agar topologi dapat mengakses keluar menggunakan iptables, maka script yang digu
 iptables -t nat -A POSTROUTING -s 192.218.0.0/20 -o eth0 -j SNAT --to-source $(hostname -I | awk '{print $1}')
 ```
 iptables yang digunakan adalah NAT Table, kemudian chain yang digunakan adalah `POSTROUTING` dan sourcenya adalah NID topologi, yaitu `192.218.0.0`.
+![no1.1](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no1.1.png)
+![no1.2](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no1.2.png)
+![no1.3](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no1.3.png)
+![no1.4](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no1.4.png)
 
 ## Soal 2
 ### Pertanyaan
@@ -35,6 +42,8 @@ iptables -A INPUT -p tcp -j DROP
 iptables -A INPUT -p udp -j DROP
 ```
 Untuk menyaring semua paket yang masuk sesuai ketentuan soal, maka chain yang diguanakan adalah `INPUT`. Terdapat 3 rule yang diterpakan dalam soal ini. Rule pertama digunakan untuk menerima paket TCP yang memasuki port 8080. Rule kedua digunakan untuk drop semua paket TCP yang tidak memenuhi rule pertama. Rule ketiga digunakan untuk drop semua paket UDP.
+![no2.1](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no2.1.png)
+![no2.2](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no2.2.png)
 
 ## Soal 3
 ### Pertanyaan
@@ -46,6 +55,10 @@ Pada node DHCP Server (Revolte) dan DNS Server (Richter) tambahkan rule berikut
 iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
 ```
 dalam rule ini menggunakan chain `INPUT` dan protokol `icmp` untuk menyaring ping yang masuk ke node Revolte dan Richter. Kemudian ditambahkan `connlimit` sebagai batasan device yang dapat melakukan ping ke revolte di wkatu bersamaan. Jika lebih dari 3, maka akan di-drop
+![no3.1](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no3.1.png)
+![no3.2](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no3.2.png)
+![no3.3](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no3.3.png)
+![no3.4](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no3.4.png)
 
 ## Soal 4
 ### Pertanyaan
@@ -58,6 +71,10 @@ iptables -A INPUT -p tcp --dport 22 -s 192.218.4.0/22 -j ACCEPT
 iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
 Rule ini menggunakan chain `INPUT` dan hanya diterapkan pada protokol `tcp` untuk SSH web server. port yang dimasukkan ke dalam rule adalah port 22. Yang diterima hanyalah input dari subnet GrobeForest, yaitu 192.218.4.0/22. Selain subnet ini, maka paket akan di-drop.
+![no4.1](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no4.1.png)
+![no4.2](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no4.2.png) </br>
+![no4.3](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no4.3.png)
+![no4.4](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no4.4.png)
 
 ## Soal 5
 ### Pertanyaan
@@ -70,6 +87,8 @@ iptables -A INPUT -p tcp --dport 22 -m time --weekdays Mon,Tue,Wed,Thu,Fri --tim
 iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
 Rule pertama menyatakan bahwa akses menuju webserver hanya diperbolehkan pada hari Senin, Selasa, Rabu, Kamis, dan Jumat mulai dari pukul 08.00 hingga 16.00. Sedangkan rule kedua menyatakan paket yang dikirim di luar waktu tersebut akan didrop
+![no5.1](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no5.1.png)
+![no5.2](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no5.2.png)
 
 ## Soal 6
 ### Pertanyaan
@@ -84,6 +103,8 @@ iptables -A INPUT -p tcp --dport 22 -m time --weekdays Mon,Tue,Wed,Thu,Fri --tim
 iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
 Rule yang baru ditambahkan ini akan melakukan drop paket yang masuk pada hari Senin, Selasa, Rabu, Kamis pada pukul 12.00 - 13.00. Serta drop paket yang masuk pada hari jumat pukul 11.00 - 13.00. Selain itu, akan mengikuti rule seperti nomor 5
+![no6.1](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no6.1.png)
+![no6.2](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no6.2.png)
 
 ## Soal 7
 ### Pertanyaan
@@ -98,6 +119,13 @@ iptables -A PREROUTING -t nat -p tcp --dport 443 -d 192.218.0.14 -m statistic --
 iptables -A PREROUTING -t nat -p tcp --dport 443 -d 192.218.0.14 -j DNAT --to-destination 192.218.4.2
 ```
 Rule ini akan mengarahkan semua akses tcp dengan port 80 dan port 443 ke web server Sein dan Stark. Routing akan dilakukan secara bergantian antara Sein dan Stark
+![no7.1](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no7.1.png)
+![no7.2](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no7.2.png)
+![no7.3](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no7.3.png)
+![no7.4](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no7.4.png)
+![no7.5](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no7.5.png)
+![no7.6](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no7.6.png)
+
 
 ## Soal 8
 ### Pertanyaan
@@ -109,6 +137,8 @@ Pada node Sein dan Stark tambahkan rule berikut
 iptables -A INPUT -p tcp --dport 80 -m time --datestart "2024-02-14T00:00" --datestop "2024-06-26T23:59" -s 192.218.0.0/30 -j DROP
 ```
 Rule ini akan membuat paket dengan protokol tcp dan port 80 yang dikirim ke web server dalam kurun waktu tersebut di-drop
+![no8.1](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no8.1.png)
+![no8.2](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no8.2.png)
 
 ## Soal 9
 ### Pertanyaan
@@ -125,6 +155,7 @@ iptables -A INPUT -m recent --name tab_scan --set -j ACCEPT
 iptables -A FORWARD -m recent --name tab_scan --set -j ACCEPT
 ```
 Rule-rule di atas akan melakukan scanning terhadap paket yang masuk ke web server. `--seconds 600` akan melakukan perhitungan interval waktu. Dalam kasus ini, wkatu yang digunakan adalah 600 detik (10 menit). Kemudian `--hitcount 20` akan memberi batasan maksimum berapa paket yang masuk dalam interval tersebut. Dalam kasus ini, nilai maksimum permintaan adalah 20 kali.
+![no9](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/no9.png)
 
 ## Soal 10
 ### Pertanyaan
