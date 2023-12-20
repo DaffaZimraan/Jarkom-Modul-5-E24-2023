@@ -1,0 +1,22 @@
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+        address 192.218.0.21
+        netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+        address 192.218.0.17
+        netmask 255.255.255.252
+
+up route add -net 192.218.0.0 netmask 255.255.255.252 gw 192.218.0.18
+up route add -net 192.218.0.4 netmask 255.255.255.252 gw 192.218.0.18
+up route add -net 192.218.2.0 netmask 255.255.254.0 gw 192.218.0.18
+up route add -net 192.218.0.128 netmask 255.255.255.128 gw 192.218.0.18
+up route add -net 192.218.0.12 netmask 255.255.255.252 gw 192.218.0.18
+up route add -net 192.218.0.8 netmask 255.255.255.252 gw 192.218.0.18
+
+up route add -net 192.218.4.0 netmask 255.255.252.0 gw 192.218.0.22
+up route add -net 192.218.8.0 netmask 255.255.248.0 gw 192.218.0.22
