@@ -4,6 +4,7 @@
 2. Wardatul Amalia Safitri (5025211006)
 
 ## Topologi
+![topologimodul5](https://github.com/DaffaZimraan/Jarkom-Modul-5-E24-2023/blob/main/image/topologimodul5.jpg) </br>
 
 ## VLSM
 
